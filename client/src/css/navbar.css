@@ -1,0 +1,80 @@
+#navbar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    font-family: "Oswald";
+    font-weight: 400;
+    height: 46px;
+    position: fixed;
+    width: 100%;
+    top: 0%;
+}
+
+li {
+    float: left;
+    user-select: none;
+}
+
+li a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 11px 9px;
+    padding-bottom: 13px;
+    text-decoration: none;
+}
+
+.user-role {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 11px 18px;
+    padding-bottom: 13px;
+    text-decoration: none;
+}
+
+li div {
+    display: inline-block;
+
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+li a:hover {
+    color: white;
+}
+
+.active {
+    background-color: #04AA6D;
+}
+
+.active:hover {
+    background-color: #0c9d68;
+}
+
+@media (max-width:500px) {
+    .logo {
+        display: none;
+    }
+}
+
+#mediumWell {
+    margin-right: 8px;
+}
+
+#mediumWell:hover {
+    visibility: hidden;
+    position: relative;
+}
+
+#mediumWell:hover:after {
+    visibility: visible;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: " Well";
+}

@@ -1,0 +1,112 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: calc(100vh - 46px);
+    font-family: "Oswald";
+    font-weight: 400;
+    color: #eeeeee;
+}
+
+.login-container {
+    position: relative;
+    border-radius: 17px;
+    overflow: hidden;
+}
+
+.login-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 17px;
+    top: -30%;
+    left: 20%;
+    background: #333;
+    inset: 3px;
+    z-index: -1;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 40px 50px;
+}
+
+input {
+    border: 1px solid;
+    background: #00000069;
+}
+
+.form > h1 {
+    margin-bottom: 30px;
+    margin-top: 0px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+    width: 100%;
+}
+
+.reminder {
+    color: #eeeeee;
+    font-size: 1.2rem;
+}
+
+.reminder a {
+    color: #04AA6D;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.15s all ease-in-out;
+}
+
+.reminder a:hover {
+    text-decoration: underline;
+    color: #0c9d68;
+}
+
+.input {
+    padding: 8px 25px;
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    width: 100%;
+    color: #eeeeee;
+}
+
+.input:focus {
+    outline: none;
+}
+
+#regButton {
+    padding: 8px 25px;
+    width: 100%;
+    border-radius: 4px;
+    border: none;
+    background-color: #04AA6D;
+    color: white;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: 0.2s all;
+}
+
+#regButton:hover {
+    background-color: #0c9d68;
+}
+
+#error {
+    color: #f23952;
+    font-size: 1.4rem;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}

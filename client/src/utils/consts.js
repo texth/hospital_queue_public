@@ -1,0 +1,8 @@
+export const LOGIN_ROUTE = '/login'
+export const REGISTRATION_ROUTE = '/registration'
+export const CONFIRM_ROUTE = '/confirm'
+export const FORGET_ROUTE = '/forget'
+export const RESET_ROUTE = '/reset'
+export const DOCTORS_ROUTE = '/'
+export const DOCTOR_ROUTE = '/doctor'
+export const SELFEDIT_ROUTE = '/selfedit'
