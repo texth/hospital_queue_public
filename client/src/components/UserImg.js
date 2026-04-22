@@ -1,7 +1,6 @@
 import React from 'react'
 
 const UserImg = (props) => {
-    console.log(props);
     let img;
     if (props.pic) {
         img = "/img/avatars/" + props.pic

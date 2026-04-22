@@ -38,4 +38,42 @@ router.get('/myslots', auth, async (req, res) => {
     }
 });
 
+router.post('/book/:slot_id', auth, async (req, res) => {
+    try {
+        const slot = await Slot.findById(req.params.slot_id);
+        console.log(slot)
+        if(!slot){
+            return res.status(404).send("Slot not found");
+        }
+        if(slot.user_id){
+            return res.status(400).send("Slot already booked");
+        }
+        slot.user_id = req.user.user_id;
+        let slot_ = await Slot.save(slot);
+        res.status(200).json(slot_);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+router.post('/cancel/:slot_id', auth, async (req, res) => {
+    try {
+        const slot = await Slot.findById(req.params.slot_id);
+        if(!slot){
+            return res.status(404).send("Slot not found");
+        }
+        if(slot.user_id != req.user.user_id){
+            return res.status(400).send("You can only cancel your own slots");
+        }
+        slot.user_id = null;
+        let slot_ = await Slot.save(slot);
+        res.status(200).json(slot_);
+    } catch (err) {
+        console.log(err);
+    }
+});
+
+
+
+
 module.exports = router;

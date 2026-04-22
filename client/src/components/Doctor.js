@@ -1,62 +1,87 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import "../css/doctor.css"
 import UserImg from './UserImg'
 import { Context } from "../index";
+import { doctorSlots, mySlots, bookSlot, cancelSlot } from '../http/slotAPI'
+import { set } from 'mobx';
 
 const Doctor = (props) => {
     const { user } = useContext(Context);
-    // const [edit, setEdit] = React.useState(false)
 
-    // let date = new Date(props.doctor.publish_date)
-    // let allowToEdit = (date.getTime() + 7200000) > Date.now()
-    // let strDate = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear()
-    // let status = props.post.status
-    // let color = "#04AA6D"
-    // if (status == "active") {
-    //     status = "Active"
-    // }
-    // if (status == "solved") {
-    //     status = "Solved"
-    //     color = "#777777"
-    // }
+    const [showMenu, setShowMenu] = React.useState(false)
+    const [time, setTime] = React.useState("14:00")
+    const [question, setQuestion] = React.useState("")
+    const [answer, setAnswer] = React.useState("")
+    const [selectedSlot, setSelectedSlot] = React.useState(null)
+    const [slots, setSlots] = React.useState(props.doctor.slots)
 
-    // let goToPostPage = () => {
-    //     if (!window.location.href.includes("/post/")) {
-    //         window.location.href = "/post/" + props.post.id
-    //     }
-    // }
+    let slotClick = (slot) => {
+        if (user.isAuth) {
+            console.log(slot)
+            console.log(user.user)
+            if (slot.available) {
+                setQuestion("Do you want to make an appointment with ")
+                setAnswer("Make appointment")
+                setTime(new Date(slot.time).toLocaleString())
+                setSelectedSlot(slot)
+                setShowMenu(true)
+            } else if (slot.user_id == user.user.id) {
+                setQuestion("Do you want to cancel your appointment with ")
+                setAnswer("Cancel appointment")
+                setTime(new Date(slot.time).toLocaleString())
+                setSelectedSlot(slot)
+                setShowMenu(true)
+            }
+        }
+    }
 
-    // let makeSolved = (event) => {
-    //     event.stopPropagation()
-    //     patchPost(props.post.id, props.post.title, props.post.content, props.post.tags, "solved")
-    //     window.location.reload()
-    // }
+    let yes = () => {
+        if (answer == "Make appointment") {
+            makeAppointment()
+        } else {
+            cancelAppointment()
+        }
+    }
 
-    // let makeActive = (event) => {
-    //     event.stopPropagation()
-    //     patchPost(props.post.id, props.post.title, props.post.content, props.post.tags, "active")
-    //     window.location.reload()
-    // }
+    let makeAppointment = () => {
+        bookSlot(selectedSlot.id).then(() => {
+            update()
+        })
+        setShowMenu(false)
+    }
 
-    // let deleteButton = (event) => {
-    //     event.stopPropagation()
-    //     if (window.confirm("Are you sure you want to delete this post?")) {
-    //         deletePost(props.post.id)
-    //     }
-    //     window.location.href = "/"
-    // }
+    let cancelAppointment = () => {
+        cancelSlot(selectedSlot.id).then(() => {
+            update()
+        })
+        // cancel appointment
+        setShowMenu(false)
+    }
 
-    // let goToUserPage = (event) => {
-    //     event.stopPropagation()
-    //     if (!window.location.href.includes("/user/")) {
-    //         window.location.href = "/user/" + props.post.user.id
-    //     }
-    // }
+    let update = async () => {
+        let slots = await doctorSlots(props.doctor.id)
+        try {
+            let myslots = await mySlots()
+            for (let i = 0; i < slots.length; i++) {
+                for (let j = 0; j < myslots.length; j++) {
+                    if (slots[i].id == myslots[j].id) {
+                        slots[i].user_id = user.user.id
+                    }
+                }
+            }
+        } catch (e) {
+            console.log(e)
+        }
+        setSlots(slots)
+        return slots
+    }
 
-    // let goToTagPage = (event, id) => {
-    //     event.stopPropagation()
-    //     window.location.href = "/?tag=" + id
-    // }
+    try {
+        useEffect(() => {
+            update();
+        }, []);
+    } catch (e) {
+    }
 
     return (
         <div className="doctor">
@@ -64,20 +89,39 @@ const Doctor = (props) => {
                 <div className="doctor-header">
                     <div className="doctor-avatar">
                         <UserImg pic={props.doctor.doctor_picture} width="30" height="30" />
+                    </div>
+                    <div className="doctor-text">
                         <div className="doctor-name">
                             {props.doctor.full_name}
                         </div>
-                    </div>
-                    <div className="doctor-description">
-                        {props.doctor.description}
+                        <div className="doctor-description">
+                            {props.doctor.description}
+                        </div>
                     </div>
                 </div>
                 <div className="doctor-slots">
-                    {props.doctor.slots.map((slot) => (
-                        <div key={slot.id} className="doctor-slot">
+                    {slots.map((slot) => (
+                        <div key={slot.id} className="doctor-slot" onClick={() => slotClick(slot)} style={{ 
+                            backgroundColor: slot.available ? "#04AA6D" : (slot.user_id == user.user.id && user.isAuth ? "#1b8fc5" : "#5f5f5f"), 
+                            cursor: slot.available || (slot.user_id == user.user.id && user.isAuth) ? "pointer" : "default"
+                        }}>
                             {new Date(slot.time).toLocaleString()}
                         </div>
                     ))}
+                </div>
+            </div>
+            <div className="floating-container" style={{ display: showMenu ? 'block' : 'none' }}>
+                <div className="floating-menu">
+                    <div className="floating-menu-title">
+                        {question} {props.doctor.full_name}?
+                    </div>
+                    <div className="floating-menu-time">
+                        Time: {time}
+                    </div>
+                    <div className="floating-menu-buttons">
+                        <button className="floating-menu-button-yes" onClick={() => yes()}>{answer}</button>
+                        <button className="floating-menu-button-no" onClick={() => setShowMenu(false)}>Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>

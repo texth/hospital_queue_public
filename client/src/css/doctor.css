@@ -70,10 +70,8 @@
 .doctor-content {
     display: flex;
     flex-direction: column;
-    gap: 10px;
     padding: 15px;
     margin: 20px;
-    margin-left: 15px;
     background: #eeeeee;
     border-radius: 10px;
     width: 100%;
@@ -95,11 +93,15 @@
     }
 }
 
+.doctor-text {
+    margin-top: 10px;
+    height: 100%;
+}
+
 .doctor-name {
     font-size: 1.2rem;
     font-weight: 500;
     margin-right: 15px;
-    margin-top: 15px;
 }
 
 
@@ -111,24 +113,24 @@
 }
 
 .doctor-slots {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* flex-direction: row;
     align-items: center;
-    gap: 0px;
-    margin-top: 10px;
+    gap: 0px; */
 }
 
 /* doctor slots in column if width is limited */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .doctor-slots {
         flex-direction: column;
         gap: 10px;
         align-items: flex-start;
     }
-}
+} */
 
 .doctor-slot {
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     font-weight: 400;
     padding: 4px 10px;
     background: #04AA6D;
@@ -136,7 +138,7 @@
     border-radius: 5px;
     cursor: pointer;
     margin-right: 10px;
-    width: 100%;
+    margin-top: 10px;
 }
 
 .doctor-slot:hover {
@@ -159,10 +161,70 @@
     }
 }
 
-.delete-button {
+.floating-menu-button-no {
     background-color: rgb(209, 62, 57);
+    color: white;
+    text-align: center;
+    border: none;
+    display: inline-block;
+    padding: 4px 15px;
+    border-radius: 5px;
+    margin-left: auto;
 }
 
-.delete-button:hover {
+.floating-menu-button-yes {
+    background-color: rgb(4, 170, 109);
+    color: white;
+    text-align: center;
+    border: none;
+    display: inline-block;
+    padding: 4px 15px;
+    border-radius: 5px;
+}
+
+
+.floating-menu-button-no:hover {
     background-color: rgb(189, 51, 46);
+}
+
+.floating-menu-button-yes:hover {
+    background-color: rgb(4, 157, 100);
+}
+
+.floating-container {
+    list-style-type: none;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    position: fixed;
+    width: 100%;
+    height: calc(100% - 46px);
+    top: /*0% - 46px*/ calc(0% + 46px);
+}
+
+.floating-menu {
+    display: flex;
+    background-color: white;
+    opacity: 1;
+    flex-direction: column;
+    align-items: left;
+    justify-content: center;
+    padding: 20px;
+    width: min(350px, 90%);
+    /* center the menu */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+}
+
+.floating-menu-title {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.floating-menu-buttons {
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
 }

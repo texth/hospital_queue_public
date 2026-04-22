@@ -1,0 +1,34 @@
+.appointments {
+    padding-top: 1px;
+}
+
+.appointment {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-gap: 20px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    padding: 15px;
+    margin: 20px;
+    background: #eeeeee;
+    border-radius: 10px;
+    width: calc(100% - 40px);
+}
+
+.appointment-header {
+    width: 300px;
+}
+.button-no {
+    background-color: rgb(209, 62, 57);
+    color: white;
+    text-align: center;
+    border: none;
+    padding: 4px 15px;
+    border-radius: 5px;
+    margin: 5px;
+    margin-left: auto;
+}
+
+.button-no:hover {
+    background-color: rgb(189, 51, 46);
+}

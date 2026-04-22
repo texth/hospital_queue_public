@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Doctor from '../components/Doctor'
 import { getDoctors } from '../http/doctorAPI'
-import { doctorSlots } from '../http/slotAPI'
+import { doctorSlots, mySlots } from '../http/slotAPI'
 import { useSearchParams } from 'react-router-dom'
 import { Context } from "../index";
 // import FloatingAddButton from '../components/FloatingAddButton'
 // import { getTag } from '../http/tagsAPI'
 
 const Doctors = (props) => {
+    const { user } = useContext(Context);
+    
     const [loading, setLoading] = useState(true)
 
     const [doctors, setDoctors] = useState([])
@@ -15,11 +17,6 @@ const Doctors = (props) => {
     const [searchParams, setSearchParams] = useSearchParams()
 
     let status = searchParams.get("status")
-    let user_id = searchParams.get("userid")
-
-    if (props.user_id) {
-        user_id = props.user_id
-    }
 
     let uncheck = () => {
         document.getElementById("free").checked = false;
@@ -33,18 +30,34 @@ const Doctors = (props) => {
             status = "null"
         }
         update().then(data => {
-            setDoctors(data.doctors)
+            if (status == "free") {
+                // show if my slot or available
+                data = data.filter(doctor => doctor.slots.some(slot => slot.available || (slot.user_id)))
+            }
+            setDoctors(data)
             setLoading(false)
         })
     }
 
     let update = async () => {
         let doctors = await getDoctors()
-        console.log(doctors);
         for (let i = 0; i < doctors.length; i++) {
             let slots = await doctorSlots(doctors[i].id)
+            try {
+                let myslots = await mySlots()
+                for (let i = 0; i < slots.length; i++) {
+                    for (let j = 0; j < myslots.length; j++) {
+                        if (slots[i].id == myslots[j].id) {
+                            slots[i].user_id = user.user.id
+                        }
+                    }
+                }
+            } catch (e) {
+                console.log(e)
+            }
             doctors[i].slots = slots
         }
+        console.log(doctors);
         return doctors
     }
 

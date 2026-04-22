@@ -61,20 +61,3 @@ li a:hover {
         display: none;
     }
 }
-
-#mediumWell {
-    margin-right: 8px;
-}
-
-#mediumWell:hover {
-    visibility: hidden;
-    position: relative;
-}
-
-#mediumWell:hover:after {
-    visibility: visible;
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: " Well";
-}

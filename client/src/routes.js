@@ -1,6 +1,7 @@
-import { LOGIN_ROUTE, DOCTORS_ROUTE, REGISTRATION_ROUTE, DOCTOR_ROUTE, CONFIRM_ROUTE, SELFEDIT_ROUTE, FORGET_ROUTE, RESET_ROUTE } from "./utils/consts";
+import { LOGIN_ROUTE, DOCTORS_ROUTE, REGISTRATION_ROUTE, DOCTOR_ROUTE, CONFIRM_ROUTE, APPOINTMENTS_ROUTE, FORGET_ROUTE, RESET_ROUTE } from "./utils/consts";
 import Auth from "./pages/Auth";
 import Doctors from "./pages/Doctors";
+import Appointments from "./pages/Appointments";
 
 export const publicRoutes = [
     {
@@ -27,10 +28,6 @@ export const publicRoutes = [
         path: DOCTORS_ROUTE,
         Component: Doctors
     }
-    // {
-    //     path: DOCTOR_ROUTE + '/:id',
-    //     Component: PostPage
-    // }
 ]
 
 // TODO:
@@ -43,8 +40,8 @@ export const publicRoutes = [
 
 
 export const privateRoutes = [
-    // {
-    //     path: SELFEDIT_ROUTE,
-    //     Component: SelfEdit
-    // }
+    {
+        path: APPOINTMENTS_ROUTE,
+        Component: Appointments
+    }
 ]

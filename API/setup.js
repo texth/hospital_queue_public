@@ -97,13 +97,22 @@ async function insertSlots(connection) {
     '2026-04-14 09:00',
     '2026-04-14 10:00',
     '2026-04-14 11:00',
+    '2026-04-14 12:00',
     '2026-04-14 14:00',
     '2026-04-14 15:00',
+    '2026-04-14 16:00',
+    '2026-04-14 17:00'
   ];
 
   const slots = [];
   for (const doctor of doctorRows) {
-    for (const time of slotTimes) {
+    // for (const time of slotTimes) {
+    //   slots.push([doctor.id, null, time]);
+    // }
+
+    // add 4-6 random slots per doctor but sort by time
+    const selectedTimes = slotTimes.sort(() => 0.5 - Math.random()).slice(0, Math.floor(Math.random() * 3) + 4).sort();
+    for (const time of selectedTimes) {
       slots.push([doctor.id, null, time]);
     }
   }
@@ -115,9 +124,15 @@ async function insertSlots(connection) {
   console.log(`Inserted ${slots.length} slots for ${doctorRows.length} doctors.`);
 }
 
+async function resetDatabase(connection) {
+  await connection.query(`DROP DATABASE IF EXISTS \`${DB_DATABASE}\``);
+  console.log(`Database ${DB_DATABASE} dropped.`);
+}
+
 async function main() {
   const connection = await createConnection(false);
   try {
+    await resetDatabase(connection);
     await ensureSchema(connection);
     await insertDoctors(connection);
     await insertSlots(connection);

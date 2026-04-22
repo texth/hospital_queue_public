@@ -20,9 +20,9 @@ const NavBar = observer(() => {
             <li><a href="/">Search page</a></li>
             {user.isAuth ?
                     <div>
-                    <li><a href={"/user/" + user.user.id}>My appointments</a></li>
+                    <li><a href={"/appointments"}>My appointments</a></li>
                     <li style={{ float: "right" }}><a href="/login" onClick={() => logOut()}>Logout</a></li>
-                    <li style={{ float: "right" }}><a href="/selfedit"><span> {user.user.full_name}</span></a></li>
+                    <li style={{ float: "right" }}><a href="/appointments"><span> {user.user.full_name}</span></a></li>
                     </div>
                 :
                 <div>
